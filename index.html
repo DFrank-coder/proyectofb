@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilo.css">
+    <img src="https://flybondi.com/assets/images/logo.svg" alt="Logo Flybondi" width="300px" height="100px">
+
+    <title>Vuelos Flybondi</title>
+</head>
+<body>
+    
+    <h1>Buscar Vuelos sólo Argentina</h1>
+    
+    <div class="input">
+        <label for="origin">Origen: </label>
+        <input class="origen" type="text" id="origin" placeholder="Ej: Córdoba">
+    </div>
+
+    <div class="input">
+        <label for="destination">Destino: </label>
+        <input class="destino" type="text" id="destination" placeholder="Ej: Bariloche">
+    </div>
+
+    <button onclick="filtrarVuelos()">Buscar Vuelos</button>
+
+    <ul id="listado-vuelos"></ul>
+    <!--para que se carge primero el dataset-->
+    <script src="json/dataset.js"></script>
+
+    <script>
+        const equivalenciaIATA = {
+            "córdoba": "COR",
+            "cordoba": "COR",
+            "bariloche": "BRC",
+            "buenos aires": "EPA",
+            "palomar": "EPA",
+            "iguazu": "IGU",
+            "posadas": "PSS",
+            "mendoza": "MDZ"
+        };
+
+        function filtrarVuelos() {
+            const originInput = document.getElementById("origin").value.trim().toLowerCase();
+            const destinationInput = document.getElementById("destination").value.trim().toLowerCase();
+
+            const origin = equivalenciaIATA[originInput] || originInput.toUpperCase();
+            const destination = equivalenciaIATA[destinationInput] || destinationInput.toUpperCase();
+
+            if (!window.flights) {
+                console.error("Los vuelos no se han cargado correctamente.");
+                return;
+            }
+            const filterFlights = window.flights
+                .filter(flight => flight.origin === origin && flight.destination === destination)
+                .sort((a, b) => a.price - b.price)
+                .slice(0, 10);
+
+            displayFlights(filterFlights);
+        }
+
+        function displayFlights(flights) {
+            const listElement = document.getElementById("listado-vuelos");
+            listElement.innerHTML = "";
+
+            if (flights.length === 0) {
+                listElement.innerHTML = "<li>No se encontraron vuelos.</li>";
+            } else {
+                flights.forEach(flight => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `Fecha: ${new Date(flight.date).toLocaleString()}, Precio: $${flight.price}`;
+                    listElement.appendChild(listItem);
+                });
+            }
+        }
+        window.filtrarVuelos = filtrarVuelos;
+    </script>
+    <hr>
+    <br><br>
+    <footer class="footer">
+        <br><br>
+        <p>Visitá nuestra <a href="https://flybondi.com/ar" target="_blank">Web</a></p>
+        <br><br>
+
+        <p>Seguinos en nuestras redes:</p>
+        <br>
+        <a href="#" target="_blank">Facebook</a>
+        <br><br>
+        <a href="#" target="_blank">Instagram</a>
+    </footer>
+
+
+
+
+    </footer>
+</body>
+</html>
