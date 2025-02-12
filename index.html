@@ -4,28 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/estilo.css">
-    <img src="https://flybondi.com/assets/images/logo.svg" alt="Logo Flybondi" width="300px" height="100px">
+    <link rel="icon" type="image/png" href="images/logofbfavicom.png">
+    <img src="https://flybondi.com/assets/images/logo.svg" alt="Logo Flybondi" width="300px" height="100px" class="logo">
 
     <title>Vuelos Flybondi</title>
 </head>
 <body>
     
     <h1>Buscar Vuelos sólo Argentina</h1>
-    
     <div class="input">
         <label for="origin">Origen: </label>
         <input class="origen" type="text" id="origin" placeholder="Ej: Córdoba">
     </div>
-
     <div class="input">
         <label for="destination">Destino: </label>
         <input class="destino" type="text" id="destination" placeholder="Ej: Bariloche">
     </div>
 
-    <button onclick="filtrarVuelos()">Buscar Vuelos</button>
+    <button id="buscar-vuelos">Buscar Vuelos</button>
 
     <ul id="listado-vuelos"></ul>
-    <!--para que se carge primero el dataset-->
+    <!--para que se cargue primero el dataset-->
     <script src="json/dataset.js"></script>
 
     <script>
@@ -71,27 +70,21 @@
                     listItem.textContent = `Fecha: ${new Date(flight.date).toLocaleString()}, Precio: $${flight.price}`;
                     listElement.appendChild(listItem);
                 });
-            }
+            };
         }
-        window.filtrarVuelos = filtrarVuelos;
+        document.getElementById("buscar-vuelos").onclick = filtrarVuelos;                                 
     </script>
-    <hr>
-    <br><br>
-    <footer class="footer">
-        <br><br>
-        <p>Visitá nuestra <a href="https://flybondi.com/ar" target="_blank">Web</a></p>
-        <br><br>
 
-        <p>Seguinos en nuestras redes:</p>
-        <br>
-        <a href="#" target="_blank">Facebook</a>
-        <br><br>
-        <a href="#" target="_blank">Instagram</a>
-    </footer>
+<hr>
 
+<footer class="footer">
+    <p>Visitá nuestra <a href="https://flybondi.com/ar" target="_blank">Web</a></p>
+    <img src= "images/image.pdf" alt="Logo Flybondi" width="100px" height="100px"> 
 
-
-
-    </footer>
+    <p>Seguinos en nuestras redes:</p>
+    <a href="#" target="_blank">Facebook</a>
+    <br>
+    <a href="#" target="_blank">Instagram</a>
+</footer>
 </body>
 </html>
