@@ -12,6 +12,7 @@
 <body>
     
     <h1>Buscar Vuelos sólo Argentina</h1>
+    
     <div class="input">
         <label for="origin">Origen: </label>
         <input class="origen" type="text" id="origin" placeholder="Ej: Córdoba">
@@ -21,10 +22,11 @@
         <input class="destino" type="text" id="destination" placeholder="Ej: Bariloche">
     </div>
 
-    <button id="buscar-vuelos">Buscar Vuelos</button>
+    <button id="buscar-vuelos">Ordenar por precio</button>
+    <button id="ordenar-fecha">Ordenar por Fecha</button>
 
     <ul id="listado-vuelos"></ul>
-    <!--para que se cargue primero el dataset-->
+    
     <script src="json/dataset.js"></script>
 
     <script>
@@ -39,6 +41,7 @@
             "mendoza": "MDZ"
         };
 
+        let filterFlights = [];
         function filtrarVuelos() {
             const originInput = document.getElementById("origin").value.trim().toLowerCase();
             const destinationInput = document.getElementById("destination").value.trim().toLowerCase();
@@ -50,11 +53,17 @@
                 console.error("Los vuelos no se han cargado correctamente.");
                 return;
             }
-            const filterFlights = window.flights
+            
+            filterFlights = window.flights
                 .filter(flight => flight.origin === origin && flight.destination === destination)
                 .sort((a, b) => a.price - b.price)
                 .slice(0, 10);
 
+            displayFlights(filterFlights);
+        }
+
+        function ordenPorFecha() {
+            filterFlights.sort((a, b) => new Date(a.date) - new Date(b.date));
             displayFlights(filterFlights);
         }
 
@@ -70,21 +79,26 @@
                     listItem.textContent = `Fecha: ${new Date(flight.date).toLocaleString()}, Precio: $${flight.price}`;
                     listElement.appendChild(listItem);
                 });
-            };
+            }
         }
-        document.getElementById("buscar-vuelos").onclick = filtrarVuelos;                                 
+
+        document.getElementById("buscar-vuelos").onclick = filtrarVuelos;
+        document.getElementById("ordenar-fecha").onclick = ordenPorFecha
+
     </script>
 
 <hr>
 
 <footer class="footer">
     <p>Visitá nuestra <a href="https://flybondi.com/ar" target="_blank">Web</a></p>
-    <img src= "images/image.pdf" alt="Logo Flybondi" width="100px" height="100px"> 
+    <img src="images/image.pdf" alt="Logo Flybondi" width="100px" height="100px"> 
 
     <p>Seguinos en nuestras redes:</p>
     <a href="#" target="_blank">Facebook</a>
     <br>
     <a href="#" target="_blank">Instagram</a>
 </footer>
+
 </body>
 </html>
+
