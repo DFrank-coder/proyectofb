@@ -29,64 +29,62 @@
     
     <script src="json/dataset.js"></script>
 
-    <script>
+<script>
+
         const equivalenciaIATA = {
-            "córdoba": "COR",
-            "cordoba": "COR",
-            "bariloche": "BRC",
-            "buenos aires": "EPA",
-            "palomar": "EPA",
-            "iguazu": "IGU",
-            "posadas": "PSS",
-            "mendoza": "MDZ"
+        "córdoba":"COR",
+        "cordoba": "COR",
+        "bariloche": "BRC",
+        "buenos aires": "EPA",
+        "palomar": "EPA",
+        "iguazu": "IGU",
+        "posadas": "PSS",
+        "mendoza": "MDZ",
         };
 
-        let filterFlights = [];
-        function filtrarVuelos() {
-            const originInput = document.getElementById("origin").value.trim().toLowerCase();
-            const destinationInput = document.getElementById("destination").value.trim().toLowerCase();
+    let filterFlights = [];
+    function filtrarVuelos() {
+        const originInput = document.getElementById("origin").value.trim().toLowerCase();
+        const destinationInput = document.getElementById("destination").value.trim().toLowerCase();
 
-            const origin = equivalenciaIATA[originInput] || originInput.toUpperCase();
-            const destination = equivalenciaIATA[destinationInput] || destinationInput.toUpperCase();
+        const origin = equivalenciaIATA[originInput] || originInput.toUpperCase();
+        const destination = equivalenciaIATA[destinationInput] || destinationInput.toUpperCase();
 
-            if (!window.flights) {
-                console.error("Los vuelos no se han cargado correctamente.");
-                return;
-            }
-            
-            filterFlights = window.flights
-                .filter(flight => flight.origin === origin && flight.destination === destination)
-                .sort((a, b) => a.price - b.price)
-                .slice(0, 10);
-
-            displayFlights(filterFlights);
+        if (!window.flights) {
+            console.error("Los vuelos no se han cargado correctamente.");
+            return;
         }
+        
+        filterFlights = window.flights
+            .filter(flight => flight.origin === origin && flight.destination === destination)
+            .sort((a, b) => a.price - b.price)
+            .slice(0, 10);
 
-        function ordenPorFecha() {
-            filterFlights.sort((a, b) => new Date(a.date) - new Date(b.date));
-            displayFlights(filterFlights);
+        displayFlights(filterFlights);
+    }
+
+    function ordenPorFecha() {
+        filterFlights.sort((a, b) => new Date(a.date) - new Date(b.date));
+        displayFlights(filterFlights);
+    }
+
+    function displayFlights(flights) {
+        const listElement = document.getElementById("listado-vuelos");
+        listElement.innerHTML = "";
+
+        if (flights.length === 0) {
+            listElement.innerHTML = "<li>No se encontraron vuelos.</li>";
+        } else {
+            flights.forEach(flight => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `Fecha: ${new Date(flight.date).toLocaleString()}, Precio: $${flight.price}`;
+                listElement.appendChild(listItem)}
+            )};
         }
+    document.getElementById("buscar-vuelos").onclick = filtrarVuelos;
+    document.getElementById("ordenar-fecha").onclick = ordenPorFecha
 
-        function displayFlights(flights) {
-            const listElement = document.getElementById("listado-vuelos");
-            listElement.innerHTML = "";
-
-            if (flights.length === 0) {
-                listElement.innerHTML = "<li>No se encontraron vuelos.</li>";
-            } else {
-                flights.forEach(flight => {
-                    const listItem = document.createElement("li");
-                    listItem.textContent = `Fecha: ${new Date(flight.date).toLocaleString()}, Precio: $${flight.price}`;
-                    listElement.appendChild(listItem);
-                });
-            }
-        }
-
-        document.getElementById("buscar-vuelos").onclick = filtrarVuelos;
-        document.getElementById("ordenar-fecha").onclick = ordenPorFecha
-
-    </script>
-
+</script>   
 <hr>
 
 <footer class="footer">
